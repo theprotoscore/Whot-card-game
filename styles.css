@@ -1,0 +1,32 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  text-align: center;
+}
+
+.whot-brand {
+  height: 175px;
+  width: 125px;
+}
+
+#computer-cards,
+#your-cards {
+  border: 1px solid black;
+}
+#computer-cards img,
+#your-cards img {
+  height: 175px;
+  width: 125px;
+  margin: 1px;
+}
+
+#hit {
+  width: 100px;
+  height: 50px;
+  font-size: 20px;
+}
+
+#stay {
+  width: 100px;
+  height: 50px;
+  font-size: 20px;
+}
