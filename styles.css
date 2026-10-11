@@ -13,7 +13,8 @@ body {
   border: 1px solid black;
 }
 #computer-cards img,
-#your-cards img {
+#your-cards img,
+.top-cards-container img {
   height: 175px;
   width: 125px;
   margin: 1px;
@@ -29,4 +30,11 @@ body {
   width: 100px;
   height: 50px;
   font-size: 20px;
+}
+
+.top-cards-container {
+  display: flex;
+  justify-content: space-between;
+  width: 625px;
+  margin: 0 auto;
 }

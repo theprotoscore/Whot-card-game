@@ -1,12 +1,16 @@
-// let hidden;
+let startCard; // let hidden;
 let deck;
-let computerCards = [];
-let yourCards = [];
+let computerHand = [];
+let playerHand = [];
 
 window.onload = function () {
   buildDeck();
   shuffleDeck();
   startGame();
+
+  // Initial render on page load
+  render(playerHand, playerHandContainer);
+  render(computerHand, computerHandContainer);
 };
 
 function buildDeck() {
@@ -19,8 +23,6 @@ function buildDeck() {
       deck.push(`${shapes[shape]}_${numbers[number]}`);
     }
   }
-
-  console.log(deck);
 }
 
 function shuffleDeck() {
@@ -34,23 +36,50 @@ function shuffleDeck() {
 }
 
 function startGame() {
-  // hidden = deck.pop();
+  startCard = deck.pop(); // hidden = deck.pop();
 
-  for (let i = 0; i < 5; i++) {
-    let cardImg = document.createElement("img");
-    let card = deck.pop();
-    cardImg.src = `./cards/${card}.svg`;
-    computerCards.push(card);
-    document.getElementById("computer-cards").append(cardImg);
-  }
-  console.log(computerCards);
+  cardImg = document.createElement("img");
+  cardImg.src = `./cards/${startCard}.svg`;
+  document.getElementById("top-cards-container").append(cardImg);
 
-  for (let i = 0; i < 5; i++) {
-    let cardImg = document.createElement("img");
-    let card = deck.pop();
-    cardImg.src = `./cards/${card}.svg`;
-    yourCards.push(card);
-    document.getElementById("your-cards").append(cardImg);
+  dealCards(computerHand, "computer-cards");
+  dealCards(playerHand, "your-cards");
+
+  console.log(deck);
+  console.log(startCard);
+  console.log(computerHand);
+  console.log(playerHand);
+}
+
+function dealCards(hand, playerHtml) {
+  if (playerHtml === "computer-cards" || playerHtml === "your-cards") {
+    for (let i = 0; i < 5; i++) {
+      let card = deck.pop();
+      hand.push(card);
+    }
   }
-  console.log(yourCards);
+}
+
+const computerHandContainer = document.getElementById("computer-cards");
+const playerHandContainer = document.getElementById("your-cards");
+
+// 2. Function to render the list to the DOM
+function render(hand, handContainer) {
+  handContainer.innerHTML = ""; // Clear current list
+
+  hand.forEach((card) => {
+    let cardImg = document.createElement("img");
+    cardImg.src = `./cards/${card}.svg`;
+
+    cardImg.addEventListener("click", function () {
+      deleteCard(cardImg, hand, handContainer);
+    });
+    handContainer.appendChild(cardImg);
+  });
+}
+
+function deleteCard(cardImg, hand, handContainer) {
+  const cardFile = cardImg.src.split("/").at(-1);
+  hand = hand.filter((card) => cardFile !== `${card}.svg`);
+  render(hand, handContainer); // Automatically updates the screen
 }
