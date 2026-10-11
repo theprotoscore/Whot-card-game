@@ -3,14 +3,17 @@ let deck;
 let computerHand = [];
 let playerHand = [];
 
+const computerHandContainer = document.getElementById("computer-cards");
+const playerHandContainer = document.getElementById("your-cards");
+
 window.onload = function () {
   buildDeck();
   shuffleDeck();
   startGame();
 
   // Initial render on page load
-  render(playerHand, playerHandContainer);
   render(computerHand, computerHandContainer);
+  render(playerHand, playerHandContainer);
 };
 
 function buildDeck() {
@@ -38,7 +41,7 @@ function shuffleDeck() {
 function startGame() {
   startCard = deck.pop(); // hidden = deck.pop();
 
-  cardImg = document.createElement("img");
+  const cardImg = document.createElement("img");
   cardImg.src = `./cards/${startCard}.svg`;
   document.getElementById("top-cards-container").append(cardImg);
 
@@ -60,9 +63,6 @@ function dealCards(hand, playerHtml) {
   }
 }
 
-const computerHandContainer = document.getElementById("computer-cards");
-const playerHandContainer = document.getElementById("your-cards");
-
 // 2. Function to render the list to the DOM
 function render(hand, handContainer) {
   handContainer.innerHTML = ""; // Clear current list
@@ -80,6 +80,7 @@ function render(hand, handContainer) {
 
 function deleteCard(cardImg, hand, handContainer) {
   const cardFile = cardImg.src.split("/").at(-1);
-  hand = hand.filter((card) => cardFile !== `${card}.svg`);
+  const index = hand.findIndex((card) => `${card}.svg` === cardFile);
+  if (index !== -1) hand.splice(index, 1);
   render(hand, handContainer); // Automatically updates the screen
 }

@@ -1,40 +1,65 @@
 body {
-  font-family: "Segoe UI", sans-serif;
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    Roboto,
+    sans-serif;
   text-align: center;
+  color: white;
+  min-height: 100vh;
+  margin: 0;
+
+  background-color: #23804a;
+  background-image: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+  background-attachment: fixed;
 }
 
-.whot-brand {
-  height: 175px;
-  width: 125px;
-}
-
-#computer-cards,
-#your-cards {
-  border: 1px solid black;
-}
 #computer-cards img,
 #your-cards img,
-.top-cards-container img {
-  height: 175px;
-  width: 125px;
+.top-cards-container img,
+.whot-brand {
+  max-height: 175px;
+  max-width: 125px;
   margin: 1px;
+  border-radius: 6px;
+  box-shadow: 1px 2px 0 rgba(0, 0, 0, 0.25);
 }
 
-#hit {
-  width: 100px;
-  height: 50px;
-  font-size: 20px;
+#your-cards img {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-#stay {
-  width: 100px;
-  height: 50px;
-  font-size: 20px;
+#your-cards img:hover {
+  transform: translateY(-10px);
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.45),
+    0 14px 24px rgba(0, 0, 0, 0.4);
 }
 
 .top-cards-container {
   display: flex;
   justify-content: space-between;
-  width: 625px;
-  margin: 0 auto;
+  max-width: 625px;
+  margin: 100px auto;
+  @media (max-width: 768px) {
+    max-width: 625px;
+  }
+}
+/* h3 {
+  font-family: "Playfair Display", Georgia, serif;
+} */
+h3 {
+  font-family: "Silkscreen", monospace;
+  font-size: 1.3rem;
+  color: #7fe000;
+  text-transform: none;
+  letter-spacing: 0.05em;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
 }
