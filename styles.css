@@ -21,7 +21,7 @@ body {
 
 #computer-cards img,
 #your-cards img,
-.top-cards-container img,
+.static-cards img,
 .whot-brand {
   max-height: 175px;
   max-width: 125px;
@@ -43,7 +43,7 @@ body {
     0 14px 24px rgba(0, 0, 0, 0.4);
 }
 
-.top-cards-container {
+.static-cards {
   display: flex;
   justify-content: space-between;
   max-width: 625px;

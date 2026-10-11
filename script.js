@@ -1,4 +1,4 @@
-let startCard; // let hidden;
+let currentCard = null;
 let deck;
 let computerHand = [];
 let playerHand = [];
@@ -38,28 +38,29 @@ function shuffleDeck() {
   }
 }
 
-function startGame() {
-  startCard = deck.pop(); // hidden = deck.pop();
-
+function createCard(c) {
   const cardImg = document.createElement("img");
-  cardImg.src = `./cards/${startCard}.svg`;
-  document.getElementById("top-cards-container").append(cardImg);
-
-  dealCards(computerHand, "computer-cards");
-  dealCards(playerHand, "your-cards");
-
-  console.log(deck);
-  console.log(startCard);
-  console.log(computerHand);
-  console.log(playerHand);
+  cardImg.src = `./cards/${c}.svg`;
+  return cardImg;
 }
 
-function dealCards(hand, playerHtml) {
-  if (playerHtml === "computer-cards" || playerHtml === "your-cards") {
-    for (let i = 0; i < 5; i++) {
-      let card = deck.pop();
-      hand.push(card);
-    }
+function startGame() {
+  currentCard = deck.pop(); // hidden = deck.pop();
+  document.getElementById("static-cards").append(createCard(currentCard));
+
+  dealCards(computerHand);
+  dealCards(playerHand);
+
+  console.log(deck);
+  // console.log(currentCard);
+  // console.log(computerHand);
+  // console.log(playerHand);
+}
+
+function dealCards(hand) {
+  for (let i = 0; i < 5; i++) {
+    let card = deck.pop();
+    hand.push(card);
   }
 }
 
@@ -67,12 +68,17 @@ function dealCards(hand, playerHtml) {
 function render(hand, handContainer) {
   handContainer.innerHTML = ""; // Clear current list
 
-  hand.forEach((card) => {
-    let cardImg = document.createElement("img");
-    cardImg.src = `./cards/${card}.svg`;
+  hand.forEach((cardName) => {
+    const cardImg = createCard(cardName);
 
-    cardImg.addEventListener("click", function () {
+    cardImg.addEventListener("click", function (event) {
       deleteCard(cardImg, hand, handContainer);
+
+      // Make clicked card current card
+      currentCard = event.currentTarget;
+      const lastChild = document.querySelector("#static-cards > :last-child");
+      lastChild.remove();
+      document.getElementById("static-cards").append(currentCard);
     });
     handContainer.appendChild(cardImg);
   });
