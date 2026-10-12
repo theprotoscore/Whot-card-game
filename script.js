@@ -2,6 +2,7 @@ let currentCard = null;
 let deck;
 let computerHand = [];
 let playerHand = [];
+let currentPlayer = "player"; // "player" or "computer"
 
 const computerHandContainer = document.getElementById("computer-cards");
 const playerHandContainer = document.getElementById("your-cards");
@@ -41,6 +42,7 @@ function shuffleDeck() {
 function createCard(c) {
   const cardImg = document.createElement("img");
   cardImg.src = `./cards/${c}.svg`;
+  cardImg.id = c;
   return cardImg;
 }
 
@@ -72,10 +74,13 @@ function render(hand, handContainer) {
     const cardImg = createCard(cardName);
 
     cardImg.addEventListener("click", function (event) {
+      if (currentPlayer !== "player") return;
+
       if (typeof currentCard !== "string") {
-        currentCard = currentCard.src.split("/").at(-1).split(".")[0];
+        currentCard = currentCard.id;
       }
 
+      // Deconstruct the card name into shape and number
       const [cardShape, cardNumber] = cardName.split("_");
       const [currentShape, currentNumber] = currentCard.split("_");
 
@@ -96,8 +101,8 @@ function render(hand, handContainer) {
 }
 
 function deleteCard(cardImg, hand, handContainer) {
-  const cardFile = cardImg.src.split("/").at(-1);
-  const index = hand.findIndex((card) => `${card}.svg` === cardFile);
+  ``;
+  const index = hand.findIndex((card) => card === cardImg.id);
   if (index !== -1) hand.splice(index, 1);
   render(hand, handContainer); // Automatically updates the screen
 }
