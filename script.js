@@ -72,13 +72,24 @@ function render(hand, handContainer) {
     const cardImg = createCard(cardName);
 
     cardImg.addEventListener("click", function (event) {
-      deleteCard(cardImg, hand, handContainer);
+      if (typeof currentCard !== "string") {
+        currentCard = currentCard.src.split("/").at(-1).split(".")[0];
+      }
 
-      // Make clicked card current card
-      currentCard = event.currentTarget;
-      const lastChild = document.querySelector("#static-cards > :last-child");
-      lastChild.remove();
-      document.getElementById("static-cards").append(currentCard);
+      const [cardShape, cardNumber] = cardName.split("_");
+      const [currentShape, currentNumber] = currentCard.split("_");
+
+      if (cardShape === currentShape || cardNumber === currentNumber) {
+        deleteCard(cardImg, hand, handContainer);
+
+        // Make clicked card current card
+        currentCard = event.currentTarget;
+        const lastChild = document.querySelector("#static-cards > :last-child");
+        lastChild.remove();
+        document.getElementById("static-cards").append(currentCard);
+      } else {
+        alert("Invalid card played!");
+      }
     });
     handContainer.appendChild(cardImg);
   });
