@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Click to Re-render</title>
+  </head>
+  <body>
+    <!-- The button that triggers the change -->
+    <button id="updateBtn">Change & Add Items</button>
+
+    <!-- The container where the HTML will be rendered -->
+    <div id="content"></div>
+
+    <script>
+      const container = document.getElementById("content");
+      const button = document.getElementById("updateBtn");
+
+      // 1. Your data state (this will change when clicked)
+      let maxItems = 3;
+
+      // 2. The function that returns your HTML structure
+      function renderItem(number) {
+        return `<div style="padding: 5px; color: blue;">Dynamic Item #${number}</div>`;
+      }
+
+      // 3. A master function to run the while loop and update the screen
+      function updateDashboard() {
+        // Clear previous content before rendering the new loop
+        container.innerHTML = "";
+
+        let i = 1;
+        // The while loop renders up to whatever 'maxItems' currently is
+        while (i <= maxItems) {
+          //   container.innerHTML = "";
+          container.innerHTML += renderItem(i);
+          i++;
+        }
+      }
+
+      // 4. Listen for the click event
+      button.addEventListener("click", function () {
+        // Change the state data when clicked (e.g., increase the count)
+        maxItems += 2;
+
+        // Trigger the loop function to re-render the HTML with new data
+        updateDashboard();
+      });
+
+      // Run once initially so the page isn't blank on load
+      updateDashboard();
+    </script>
+  </body>
+</html>

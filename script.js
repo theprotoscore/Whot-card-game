@@ -74,17 +74,7 @@ function render(hand, handContainer) {
     const cardImg = createCard(cardName);
 
     cardImg.addEventListener("click", function (event) {
-      if (currentPlayer !== "player") return;
-
-      if (typeof currentCard !== "string") {
-        currentCard = currentCard.id;
-      }
-
-      // Deconstruct the card name into shape and number
-      const [cardShape, cardNumber] = cardName.split("_");
-      const [currentShape, currentNumber] = currentCard.split("_");
-
-      if (cardShape === currentShape || cardNumber === currentNumber) {
+      if (isCardValid(cardName)) {
         deleteCard(cardImg, hand, handContainer);
 
         // Make clicked card current card
@@ -98,6 +88,20 @@ function render(hand, handContainer) {
     });
     handContainer.appendChild(cardImg);
   });
+}
+
+function isCardValid(cardName) {
+  if (currentPlayer !== "player") return;
+
+  if (typeof currentCard !== "string") {
+    currentCard = currentCard.id;
+  }
+
+  // Deconstruct the card name into shape and number
+  const [cardShape, cardNumber] = cardName.split("_");
+  const [currentShape, currentNumber] = currentCard.split("_");
+
+  return cardShape === currentShape || cardNumber === currentNumber;
 }
 
 function deleteCard(cardImg, hand, handContainer) {
