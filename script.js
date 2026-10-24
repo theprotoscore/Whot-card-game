@@ -54,9 +54,6 @@ function startGame() {
   dealCards(playerHand);
 
   console.log(deck);
-  // console.log(currentCard);
-  // console.log(computerHand);
-  // console.log(playerHand);
 }
 
 function dealCards(hand) {
@@ -74,15 +71,9 @@ function render(hand, handContainer) {
     const cardImg = createCard(cardName);
 
     cardImg.addEventListener("click", function (event) {
+      console.log(currentCard);
+      console.log(cardImg);
       if (isCardValid(cardName)) {
-        // deleteCard(cardImg, hand, handContainer);
-
-        // // Make clicked card current card
-        // currentCard = event.currentTarget;
-        // const lastChild = document.querySelector("#static-cards > :last-child");
-        // lastChild.remove();
-        // document.getElementById("static-cards").append(currentCard);
-
         playCard(cardName, hand, handContainer);
       } else {
         alert("Invalid card played!");
@@ -93,8 +84,6 @@ function render(hand, handContainer) {
 }
 
 function isCardValid(cardName) {
-  if (currentPlayer !== "player") return;
-
   if (typeof currentCard !== "string") {
     currentCard = currentCard.id;
   }
@@ -106,18 +95,14 @@ function isCardValid(cardName) {
   return cardShape === currentShape || cardNumber === currentNumber;
 }
 
-function deleteCard(cardImg, hand, handContainer) {
-  ``;
-  const index = hand.findIndex((card) => card === cardImg.id);
-  if (index !== -1) hand.splice(index, 1);
-  render(hand, handContainer); // Automatically updates the screen
-}
-
 function playCard(cardName, hand, handContainer) {
-  currentCard = hand.pop();
+  currentCard = hand.find((card) => card === cardName);
+  hand.splice(hand.indexOf(cardName), 1);
+
   const lastChild = document.querySelector("#static-cards > :last-child");
   lastChild.remove();
-  document.getElementById("static-cards").append(currentCard);
+  document.getElementById("static-cards").append(createCard(currentCard));
+  render(hand, handContainer);
 
   if (hand.length === 0) {
     alert(`${currentPlayer} Wins`);
@@ -132,6 +117,7 @@ function playCard(cardName, hand, handContainer) {
 
 function computerTurn() {
   const playable = computerHand.find((c) => isCardValid(c));
+  console.log(playable);
   if (playable) {
     playCard(playable, computerHand, computerHandContainer);
   } else {
