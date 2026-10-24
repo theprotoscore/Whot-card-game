@@ -75,13 +75,15 @@ function render(hand, handContainer) {
 
     cardImg.addEventListener("click", function (event) {
       if (isCardValid(cardName)) {
-        deleteCard(cardImg, hand, handContainer);
+        // deleteCard(cardImg, hand, handContainer);
 
-        // Make clicked card current card
-        currentCard = event.currentTarget;
-        const lastChild = document.querySelector("#static-cards > :last-child");
-        lastChild.remove();
-        document.getElementById("static-cards").append(currentCard);
+        // // Make clicked card current card
+        // currentCard = event.currentTarget;
+        // const lastChild = document.querySelector("#static-cards > :last-child");
+        // lastChild.remove();
+        // document.getElementById("static-cards").append(currentCard);
+
+        playCard(cardName, hand, handContainer);
       } else {
         alert("Invalid card played!");
       }
@@ -109,4 +111,33 @@ function deleteCard(cardImg, hand, handContainer) {
   const index = hand.findIndex((card) => card === cardImg.id);
   if (index !== -1) hand.splice(index, 1);
   render(hand, handContainer); // Automatically updates the screen
+}
+
+function playCard(cardName, hand, handContainer) {
+  currentCard = hand.pop();
+  const lastChild = document.querySelector("#static-cards > :last-child");
+  lastChild.remove();
+  document.getElementById("static-cards").append(currentCard);
+
+  if (hand.length === 0) {
+    alert(`${currentPlayer} Wins`);
+    return; // game over: no more turns get scheduled
+  }
+
+  currentPlayer = currentPlayer === "player" ? "computer" : "player";
+  if (currentPlayer === "computer") {
+    setTimeout(computerTurn, 800); // // small delay so it feels like a turn
+  }
+}
+
+function computerTurn() {
+  const playable = computerHand.find((c) => isCardValid(c));
+  if (playable) {
+    playCard(playable, computerHand, computerHandContainer);
+  } else {
+    // draw a card, then pass the turn
+    computerHand.push(deck.pop());
+    render(computerHand, computerHandContainer);
+    currentPlayer = "player";
+  }
 }
