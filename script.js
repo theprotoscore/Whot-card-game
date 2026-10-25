@@ -70,24 +70,19 @@ function render(hand, handContainer) {
   hand.forEach((cardName) => {
     const cardImg = createCard(cardName);
 
-    cardImg.addEventListener("click", function (event) {
-      console.log(currentCard);
-      console.log(cardImg);
-      if (isCardValid(cardName)) {
-        playCard(cardName, hand, handContainer);
-      } else {
-        alert("Invalid card played!");
-      }
-    });
+    if (handContainer.id === "your-cards") {
+      cardImg.addEventListener("click", function (event) {
+        if (isCardValid(cardName)) {
+          playCard(cardName, hand, handContainer);
+        }
+      });
+    }
+
     handContainer.appendChild(cardImg);
   });
 }
 
 function isCardValid(cardName) {
-  if (typeof currentCard !== "string") {
-    currentCard = currentCard.id;
-  }
-
   // Deconstruct the card name into shape and number
   const [cardShape, cardNumber] = cardName.split("_");
   const [currentShape, currentNumber] = currentCard.split("_");
