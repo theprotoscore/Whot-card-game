@@ -15,6 +15,7 @@ window.onload = function () {
   // Initial render on page load
   render(computerHand, computerHandContainer);
   render(playerHand, playerHandContainer);
+  startPlayerTurn();
 };
 
 function buildDeck() {
@@ -72,7 +73,7 @@ function render(hand, handContainer) {
 
     if (handContainer.id === "your-cards") {
       cardImg.addEventListener("click", function (event) {
-        if (isCardValid(cardName)) {
+        if (currentPlayer === "player" && isCardValid(cardName)) {
           playCard(cardName, hand, handContainer);
         }
       });
@@ -107,6 +108,8 @@ function playCard(cardName, hand, handContainer) {
   currentPlayer = currentPlayer === "player" ? "computer" : "player";
   if (currentPlayer === "computer") {
     setTimeout(computerTurn, 800); // // small delay so it feels like a turn
+  } else {
+    startPlayerTurn(); // checks whether the player can move
   }
 }
 
@@ -117,8 +120,29 @@ function computerTurn() {
     playCard(playable, computerHand, computerHandContainer);
   } else {
     // draw a card, then pass the turn
-    computerHand.push(deck.pop());
+    drawCard(computerHand);
     render(computerHand, computerHandContainer);
-    currentPlayer = "player";
+    startPlayerTurn();
+  }
+}
+
+function drawCard(hand) {
+  if (deck.length === 0) return false; // nothing to draw, just pass
+  hand.push(deck.pop());
+  return true;
+}
+
+function startPlayerTurn() {
+  currentPlayer = "player";
+
+  const hasPlayable = playerHand.some((c) => isCardValid(c));
+  if (!hasPlayable) {
+    // no legal card: draw one, then pass to the computer
+    setTimeout(() => {
+      drawCard(playerHand);
+      render(playerHand, playerHandContainer);
+      currentPlayer = "computer";
+      setTimeout(computerTurn, 800);
+    }, 1000);
   }
 }
